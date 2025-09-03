@@ -1,0 +1,57 @@
+# -------------------------
+# Node modules (backend + frontend)
+# -------------------------
+splitshare-backend/node_modules/
+splitshare/node_modules/
+
+# -------------------------
+# Environment files
+# -------------------------
+splitshare-backend/.env
+splitshare/.env
+splitshare-backend/.env.local
+splitshare/.env.*.local
+splitshare/.env.local
+splitshare/.env.*.local
+
+# -------------------------
+# Logs
+# -------------------------
+logs/
+*.log
+*.log.*
+pids/
+*.pid
+*.seed
+*.pid.lock
+
+# -------------------------
+# Editor / OS files
+# -------------------------
+.vscode/
+.idea/
+*.swp
+.DS_Store
+Thumbs.db
+
+# -------------------------
+# Build / output folders
+# -------------------------
+splitshare-backend/dist/
+splitshare-backend/build/
+splitshare/build/
+splitshare/dist/
+.cache/
+.next/
+out/
+
+# -------------------------
+# Coverage / testing
+# -------------------------
+coverage/
+*.lcov
+
+# -------------------------
+# Misc
+# -------------------------
+*.tgz
