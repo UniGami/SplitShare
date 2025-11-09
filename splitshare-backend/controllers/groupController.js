@@ -4,12 +4,27 @@ const User = require('../models/User');
 // Create a new group
 exports.createGroup = async (req, res) => {
   try {
+    // Create the group
     const group = await Group.create(req.body);
-    res.status(201).json(group);
+
+    // Populate after creation
+    const populatedGroup = await Group.findById(group._id)
+      .populate({
+        path: "members.user",
+        select: "name email _id",
+      })
+      .populate({
+        path: "bills",
+        populate: { path: "receipts" },
+      });
+
+    res.status(201).json(populatedGroup);
   } catch (err) {
+    console.error("❌ Error creating group:", err);
     res.status(400).json({ error: err.message });
   }
 };
+
 
 // Get all groups
 exports.getAllGroups = async (req, res) => {
@@ -43,24 +58,46 @@ exports.getGroupById = async (req, res) => {
 // Update group info
 exports.updateGroup = async (req, res) => {
   try {
-    const { name, description } = req.body; // only allow these fields
+    const { name, description, members } = req.body;
 
-    // Find and update only name & description
-    const group = await Group.findByIdAndUpdate(
-      req.params.id,
-      { name, description },
-      { new: true } // return the updated document
-    )
-    .populate('members.user') // still populate members
-    .populate({ path: 'bills', populate: { path: 'receipts' } });
+    // Build an update object dynamically
+    const updateFields = {};
+    if (name) updateFields.name = name;
+    if (description) updateFields.description = description;
+    if (Array.isArray(members) && members.length > 0) {
+      updateFields.members = members; // replace members array
+    }
 
-    if (!group) return res.status(404).json({ error: 'Group not found' });
+let group = await Group.findByIdAndUpdate(
+  req.params.id,
+  { $set: updateFields },
+  { new: true } // returns the updated document
+);
+
+// populate members → user
+group = await group.populate({
+  path: "members.user",
+  select: "name email _id",
+});
+
+// populate bills → receipts
+group = await group.populate({
+  path: "bills",
+  populate: { path: "receipts" },
+});
+
+
+    console.log("✅ Updated Group:", group.members);
+
+    if (!group) return res.status(404).json({ error: "Group not found" });
 
     res.json(group);
   } catch (err) {
+    console.error("❌ Error updating group:", err);
     res.status(400).json({ error: err.message });
   }
 };
+
 
 
 // Delete a group

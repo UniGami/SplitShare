@@ -2,7 +2,8 @@ const express = require('express');
 const router = express.Router();
 const {
   createUser,
-  getUserById,
+  getUserByEmail,
+  getUserByID,
   getAllUsers,
   updateUser,
   deleteUser
@@ -14,13 +15,14 @@ router.post('/', createUser);
 // Get all users
 router.get('/', getAllUsers);
 
-// Get a single user by ID (with bills & groups populated)
-router.get('/:id', getUserById);
+// Get a single user by email (with bills & groups populated)
+router.get('/:email', getUserByEmail);
+router.get('/id/:id', getUserByID);
 
-// Update a user by ID
-router.put('/:id', updateUser);
+// Update a user by email
+router.put('/:email', updateUser);
 
-// Delete a user by ID
-router.delete('/:id', deleteUser);
+// Delete a user by email
+router.delete('/:email', deleteUser);
 
 module.exports = router;

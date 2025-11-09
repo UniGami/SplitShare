@@ -4,7 +4,11 @@ const billSchema = new mongoose.Schema({
   userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true }, // bill creator
   groupId: { type: mongoose.Schema.Types.ObjectId, ref: 'Group', default: null }, // null = personal bill
   category: { type: String, required:true },
-  contents: { type: [String], required: true },
+  title: { type: String, required:true },
+  contents: [{
+  name: { type: String, required: true },
+  price: { type: Number, required: true }
+  }],
   amount: { type: Number, required: true },
   date: { type: Date, required: true },
 

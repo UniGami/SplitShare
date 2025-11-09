@@ -1,12 +1,13 @@
 const mongoose = require('mongoose');
 
-const userSchema = new mongoose.Schema({
-  name: { type: String, required: true },
-  email: { type: String, required: true, unique: true },
-  password: { type: String, required: true },
-  phone: { type: String },
-  dateJoined: { type: Date, default: Date.now }
-}, { timestamps: true });
+  const userSchema = new mongoose.Schema({
+    firebaseUid: { type: String, unique: true, sparse: true }, // for Firebase users
+    name: { type: String, required: true },
+    email: { type: String, required: true, unique: true },
+    password: { type: String }, // optional, empty for Google users
+    phone: { type: String },
+    dateJoined: { type: Date, default: Date.now }
+  }, { timestamps: true });
 
 // Virtuals
 userSchema.virtual('bills', {
@@ -18,7 +19,7 @@ userSchema.virtual('bills', {
 userSchema.virtual('groups', {
   ref: 'Group',
   localField: '_id',
-  foreignField: 'members'
+  foreignField: 'members.user'
 });
 
 // Include virtuals in JSON

@@ -25,10 +25,4 @@ router.put('/:id', updateGroup);
 // Delete a group
 router.delete('/:id', deleteGroup);
 
-// Add a member to the group
-router.post('/:id/members', addMember);
-
-// Remove a member from the group
-router.delete('/:id/members/:memberId', removeMember);
-
 module.exports = router;
